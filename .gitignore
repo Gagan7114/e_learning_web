@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.tmp_*
+*.log
+.DS_Store
+
+# env files (keep .env.example committed)
+.env
+.env.local
+server/.env
+web/.env
+
+# vite
+web/dist/
+.vite/

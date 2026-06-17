@@ -1,0 +1,23 @@
+{
+  "name": "e-learning",
+  "version": "1.0.0",
+  "private": true,
+  "description": "e-learning — a full-featured online course marketplace (Udemy-style). Phase 1 MVP.",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c blue,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run dev --workspace server",
+    "dev:web": "npm run dev --workspace web",
+    "build": "npm run build --workspace server && npm run build --workspace web",
+    "db:push": "npm run db:push --workspace server",
+    "db:seed": "npm run db:seed --workspace server",
+    "db:studio": "npm run db:studio --workspace server",
+    "setup": "npm install && npm run db:push && npm run db:seed"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
