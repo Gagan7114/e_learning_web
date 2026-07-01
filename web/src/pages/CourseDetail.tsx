@@ -19,6 +19,7 @@ import { api, apiError } from '@/lib/api';
 import { useAuth } from '@/store/auth';
 import { toast } from '@/store/toast';
 import { money, rating, duration, clock } from '@/lib/format';
+import { parseVideo, isEmbed } from '@/lib/video';
 import { Stars, RatingInline, PageLoader, Avatar, Badge } from '@/components/ui';
 import { CourseCard } from '@/components/CourseCard';
 import type { CourseDetail, CourseCard as Course, Lecture } from '@/lib/types';
@@ -441,7 +442,17 @@ export function CourseDetailPage() {
                 <X className="h-6 w-6" />
               </button>
             </div>
-            {preview.videoUrl ? (
+            {preview.videoUrl && isEmbed(preview.videoUrl) ? (
+              <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+                <iframe
+                  src={(parseVideo(preview.videoUrl) as any).embedUrl}
+                  title={preview.title}
+                  className="h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            ) : preview.videoUrl ? (
               <video src={preview.videoUrl} controls autoPlay className="w-full rounded-lg bg-black" />
             ) : (
               <div className="rounded-lg bg-white p-8 text-center">Preview not available.</div>

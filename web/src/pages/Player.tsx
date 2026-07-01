@@ -15,6 +15,7 @@ import {
 import { api, apiError } from '@/lib/api';
 import { toast } from '@/store/toast';
 import { clock } from '@/lib/format';
+import { parseVideo, isEmbed } from '@/lib/video';
 import { PageLoader, ProgressBar, Avatar, Stars } from '@/components/ui';
 import type { Section, Lecture } from '@/lib/types';
 
@@ -128,6 +129,17 @@ export function PlayerPage() {
           <div className="bg-black">
             {current?.type === 'quiz' ? (
               <QuizPanel lectureId={current.id} onPass={() => markComplete(current.id)} />
+            ) : current?.videoUrl && isEmbed(current.videoUrl) ? (
+              <div className="mx-auto aspect-video max-h-[70vh] w-full bg-black">
+                <iframe
+                  key={current.id}
+                  src={parseVideo(current.videoUrl).kind !== 'none' ? (parseVideo(current.videoUrl) as any).embedUrl : ''}
+                  title={current.title}
+                  className="h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
             ) : current?.videoUrl ? (
               <video
                 ref={videoRef}
